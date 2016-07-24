@@ -1,0 +1,340 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Livro"?>
+<window id="livroWindow" title="Livro" border="normal" hflex="true"
+	vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.LivroView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<groupbox>
+		<hbox hflex="true">
+			<button iconSclass="z-icon-plus" label="Novo"
+				onClick="@command('novo')" />
+			<separator />
+			<label value="Procurar por" />
+			<textbox id="filtroTextbox" hflex="true"
+				onOK="@command('pesquisar')" />
+			<separator />
+			<button iconSclass="z-icon-search" label="Pesquisar"
+				onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<listbox id="livroListbox" model="@bind(vm.livros)" mold="paging"
+		autopaging="true" vflex="true"
+		selectedItem="@bind(vm.livroSelecionado)">
+		<listhead>
+			<listheader hflex="min" label="Codigo" />
+			<listheader label="Título" />
+			<listheader label="Autores" />
+			<listheader hflex="min" label="Classificação" />
+			<listheader hflex="min" label="Cutter" />
+			<listheader hflex="min" label="Ações" align="center" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.id)" />
+				<listcell label="@load(item.titulo)" />
+				<listcell label="@load(item.autores)" />
+				<listcell label="@load(item.classificacao)" />
+				<listcell label="@load(item.cutter)" />
+				<listcell>
+					<button iconSclass="z-icon-edit"
+						onClick="@command('editar', id=item.id)" tooltiptext="Editar" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<window id="editWindow" visible="false" border="normal" width="80%"
+		height="600px">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar"
+					onClick="@command('salvar')" />
+				<button iconSclass="z-icon-trash-o" id="excluirButton"
+					label="Excluir" onClick="@command('excluir')" />
+				<button iconSclass="z-icon-sign-out" label="Fechar"
+					onClick="@command('fechar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<tabbox vflex="true" id="tabbox">
+			<tabs>
+				<tab>Dados Gerais</tab>
+				<tab>Cursos</tab>
+				<tab>Exemplares</tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+
+					<grid zclass="none" id="e_errors">
+						<columns>
+							<column />
+							<column />
+							<column />
+						</columns>
+						<rows>
+							<row zclass="none" spans="4">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Título" />
+										<textbox id="tituloTextbox"
+											value="@bind(vm.livroSelecionado.titulo)" maxlength="200"
+											hflex="true" />
+										<label id="e_titulo" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none" spans="4">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Subtítulo" />
+										<textbox
+											value="@bind(vm.livroSelecionado.subtitulo)" maxlength="200"
+											hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none" spans="2,2">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Autores" />
+										<textbox
+											value="@bind(vm.livroSelecionado.autores)" hflex="true"
+											rows="5" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Assuntos" />
+										<textbox
+											value="@bind(vm.livroSelecionado.assuntos)" hflex="true"
+											rows="5" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Classificação" />
+										<textbox
+											value="@bind(vm.livroSelecionado.classificacao)"
+											maxlength="50" hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Cutter" />
+										<textbox
+											value="@bind(vm.livroSelecionado.cutter)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="ISBN" />
+										<textbox
+											value="@bind(vm.livroSelecionado.isbn)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label
+											value="Tipo de Aquisição" />
+										<combobox
+											model="@bind(vm.tiposAquisicoes)"
+											selectedItem="@bind(vm.livroSelecionado.tipoAquisicao)"
+											hflex="true" />
+										<label id="e_tipoAquisicao" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Local" />
+										<combobox
+											model="@bind(vm.locais)"
+											selectedItem="@bind(vm.livroSelecionado.local)" hflex="true" />
+										<label id="e_local" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Idioma" />
+										<combobox
+											model="@bind(vm.idiomas)"
+											selectedItem="@bind(vm.livroSelecionado.idioma)"
+											hflex="true" />
+										<label id="e_idioma" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Editora" />
+										<combobox
+											model="@bind(vm.editoras)"
+											selectedItem="@bind(vm.livroSelecionado.editora)"
+											hflex="true" />
+										<label id="e_editora" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Consulta Local" />
+										<combobox
+											model="@bind(vm.consultasLocais)"
+											selectedItem="@bind(vm.livroSelecionado.consultaLocal)"
+											hflex="true" />
+										<label id="e_consultaLocal" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<hbox hflex="true">
+										<vbox hflex="true">
+											<label
+												value="Número de Páginas" />
+											<textbox
+												value="@bind(vm.livroSelecionado.numeroPaginas)"
+												maxlength="10" hflex="true" />
+										</vbox>
+									</hbox>
+									<hbox hflex="true">
+										<vbox hflex="true">
+											<label value="Ano" />
+											<textbox
+												value="@bind(vm.livroSelecionado.ano)" maxlength="10"
+												hflex="true" />
+										</vbox>
+									</hbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Edição" />
+										<textbox
+											value="@bind(vm.livroSelecionado.edicao)" maxlength="10"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Volume" />
+										<textbox
+											value="@bind(vm.livroSelecionado.volume)" maxlength="20"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Série" />
+										<textbox
+											value="@bind(vm.livroSelecionado.serie)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Ativo" />
+										<combobox
+											model="@bind(vm.simNao)"
+											selectedItem="@bind(vm.livroSelecionado.ativo)" hflex="true" />
+										<label id="e_ativo" />
+									</vbox>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+				<tabpanel>
+
+					<listbox id="cursoListbox"
+						model="@bind(vm.cursosDoLivroSelecionado)" vflex="true">
+						<listhead>
+							<listheader label="Nome" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model">
+							<listitem>
+								<listcell>
+									<combobox model="@bind(vm.cursos)"
+										selectedItem="@bind(each)" hflex="true"
+										onChange="@command('aoAlterarCursos')">
+										<template name="model">
+											<comboitem
+												label="${each.nome}" />
+										</template>
+									</combobox>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirCurso', id=each.id)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+				<tabpanel>
+
+					<hbox>
+						<label value="Adicionar" />
+						<intbox id="numeroNovosExemplaresIntbox"
+							value="1" cols="3" />
+						<label value="exemplar(es)" />
+						<button iconSclass="z-icon-plus"
+							onClick="@command('adicionarExemplares')"
+							tooltiptext="Adicionar" />
+					</hbox>
+
+					<separator />
+
+					<listbox
+						model="@bind(vm.livroSelecionado.exemplares)" vflex="true">
+						<listhead>
+							<listheader hflex="min" label="Registro" />
+							<listheader label="Emprestado para" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.id)" />
+
+								<listcell>
+									<zk if="${item.cliente != null}">
+										<label value="${item.cliente.nome}"/>
+									</zk>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirExemplar', el=item)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+	</window>
+
+</window>
+

@@ -1,0 +1,48 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Consultas"?>
+<window id="etiquetasWindow" border="normal" hflex="true" vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.relatorio.EtiquetasRel')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<window id="editWindow" title="Etiquetas" width="50%"
+		border="normal" position="center, center" mode="overlapped">
+
+		<grid>
+			<columns>
+				<column hflex="min" />
+				<column width="200px"/>
+				<column hflex="min" />
+				<column />
+				<column hflex="min" />
+				<column />
+				<column hflex="max" />
+			</columns>
+			<rows>
+				<row>
+					<label>Tipo</label>
+					<combobox model="@bind(vm.tipos)" id="tiposCombobox"
+						selectedItem="@bind(vm.tipoSelecionado)" />
+					<label>De</label>
+					<intbox id="inicioIntbox" />
+					<label>até</label>
+					<intbox id="fimIntbox"/>
+				</row>
+				<row>
+					<label>Linha</label>
+					<intbox value="1" id="linhaIntbox"/>
+					<label>Coluna</label>
+					<intbox value="1" id="colunaIntbox"/>
+				</row>
+				<row>
+					<label />
+					<button iconSclass="z-icon-print" label="Imprimir"
+						onClick="@command('imprimir')" />
+				</row>
+			</rows>
+		</grid>
+
+	</window>
+
+</window>
+
+

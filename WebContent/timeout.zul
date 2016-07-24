@@ -1,0 +1,6 @@
+<window width="80%" title="Session Timeout" border="normal">
+	<vbox>
+A página que você requsitou não está mais disponível.
+Isto normalmente é causado por ter se esgotado o tempo de inatividade. Acesse a página de login novaente <a href="login">clicando aqui</a>
+	</vbox>
+</window>

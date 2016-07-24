@@ -1,0 +1,52 @@
+<zk xmlns:h="native">
+	
+ 	<style src="/css/toastr.min.css"/>
+	<script src="/js/toastr.min.js"></script>
+	
+	<borderlayout hflex="true" id="zk_root">
+
+		<north>
+			 
+			<menubar id="menubar">
+				<custom-attributes org.zkoss.zul.image.preload="true" />
+				<menu label="Movimento" iconSclass="z-icon-book">
+					<menupopup>
+					    <menuitem label="Empréstimo/Devolução" href="/emprestimo"  />
+						<menuitem label="Consulta ao Acervo" href="/consulta/iesma"  target="_consulta_"/>
+						<menuseparator />
+						<menuitem label="Sair" iconSclass="z-icon-sign-out" href="/login" />
+					</menupopup>
+				</menu>
+				<menu label="Cadastros" iconSclass="z-icon-keyboard-o">
+					<menupopup>
+					    <menuitem label="Livros" href="/livro"  />
+					    <menuitem label="Monografias" href="/monografia"  />
+						<menuitem label="Edições" href="/edicao"  />
+						<menuitem label="Mídias" href="/midia"  />
+						<menuitem label="Periódicos" href="/periodico"  />
+						<menuitem label="Usuários da Biblioteca" href="/cliente"   />
+					</menupopup>
+				</menu>
+				<menu label="Tabelas Básicas" iconSclass="z-icon-table">
+					<menupopup>
+						<menuitem label="Cursos" href="/curso" />
+						<menuitem label="Editoras" iconSclass="z-icon-building" href="/editora" />
+						<menuitem label="Empresa" href="/empresa" />
+						<menuitem label="Locais" href="/local" />
+						<menuitem label="Idiomas" href="/idioma" />
+						<menuitem label="Usuários" iconSclass="z-icon-user" href="/usuario" />
+					</menupopup>
+				</menu>
+				<menu label="Relatórios" iconSclass="z-icon-file-text-o">
+					<menupopup>
+						<menuitem label="Etiquetas" href="/relatorio/etiquetas.zul" />
+						<menuseparator />
+						<menuitem label="Acervo por Data de Cadastro" href="/relatorio/acervo_data_cadastro.zul" />
+					</menupopup>
+				</menu>
+			</menubar>
+		</north>
+		<center self="@{insert(content)}" border="none" hflex="true" vflex="true"></center>
+	</borderlayout>
+	<!-- <stimer running="true" repeats="true" delay="5000" apply="com.eficaztech.biblio.util.Timer"/> -->
+</zk>

@@ -1,0 +1,184 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Mídia"?>
+<window id="midiaWindow" title="Mídia" border="normal" hflex="true"
+	vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.MidiaView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<groupbox>
+		<hbox hflex="true">
+			<button iconSclass="z-icon-plus" label="Novo"
+				onClick="@command('novo')" />
+			<separator />
+			<label value="Procurar por" />
+			<textbox id="filtroTituloTextbox" hflex="true"
+				onOK="@command('pesquisar')" />
+			<separator />
+			<button iconSclass="z-icon-search" label="Pesquisar"
+				onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<listbox id="midiaListbox" model="@bind(vm.midias)" mold="paging"
+		autopaging="true" vflex="true"
+		selectedItem="@bind(vm.midiaSelecionada)">
+		<listhead>
+			<listheader hflex="min" label="Código" />
+			<listheader label="Título" />
+			<listheader hflex="min" label="Tipo de Mídia" />
+
+			<listheader hflex="min" label="Ações" align="center" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.id)" />
+				<listcell label="@load(item.titulo)" />
+				<listcell label="@load(item.tipoMidia.nome)" />
+
+				<listcell>
+					<button iconSclass="z-icon-edit"
+						onClick="@command('editar', id=item.id)" tooltiptext="Editar" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<window id="editWindow" visible="false" border="normal" width="80%"
+		height="500px" xmlns:h="native">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar"
+					onClick="@command('salvar')" />
+				<button iconSclass="z-icon-trash-o" id="excluirButton"
+					label="Excluir" onClick="@command('excluir')" />
+				<button iconSclass="z-icon-sign-out" label="Fechar"
+					onClick="@command('fechar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<tabbox vflex="true" id="tabbox">
+			<tabs>
+				<tab>Dados Gerais</tab>
+				<tab>Exemplares</tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+
+					<grid zclass="none" id="e_errors">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox>
+										<label value="Tipo de Mídia"/>
+										<combobox id="tipoMidiaCombobox"
+											model="@bind(vm.tiposMidias)"
+											selectedItem="@bind(vm.midiaSelecionada.tipoMidia)"
+											cols="20" />
+										<label id="e_tipoMidia" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Título" />
+										<textbox
+											value="@bind(vm.midiaSelecionada.titulo)" maxlength="200"
+											hflex="true" />
+										<label id="e_titulo" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Subtítulo" />
+										<textbox
+											value="@bind(vm.midiaSelecionada.subtitulo)" maxlength="200"
+											hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Descrição" />
+										<textbox
+											value="@bind(vm.midiaSelecionada.descricao)" maxlength="500"
+											rows="5" hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Ativo" />
+										<combobox
+											model="@bind(vm.simNao)"
+											selectedItem="@bind(vm.midiaSelecionada.ativo)" />
+										<label id="e_ativo" />
+									</vbox>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+
+				</tabpanel>
+				<tabpanel>
+
+					<hbox>
+						<label value="Adicionar" />
+						<intbox id="numeroNovosExemplaresIntbox"
+							value="1" cols="3" />
+						<label value="exemplar(es)" />
+						<button iconSclass="z-icon-plus"
+							onClick="@command('adicionarExemplares')"
+							tooltiptext="Adicionar" />
+					</hbox>
+					
+					<separator />
+
+					<listbox
+						model="@bind(vm.midiaSelecionada.exemplares)" vflex="true">
+						<listhead>
+							<listheader hflex="min" label="Registro" />
+							<listheader label="Emprestada para" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.id)" />
+								<listcell>
+									<zk if="${item.cliente != null}">
+										<label value="${item.cliente.nome}"/>
+									</zk>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirExemplar', em=item)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+	</window>
+
+</window>
+

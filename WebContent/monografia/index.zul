@@ -1,0 +1,345 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Monografia"?>
+<window id="monografiaWindow" title="Monografia" border="normal"
+	hflex="true" vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.MonografiaView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<groupbox>
+		<hbox hflex="true">
+			<button iconSclass="z-icon-plus" label="Novo"
+				onClick="@command('novo')" />
+			<separator />
+			<label value="Procurar por" />
+			<textbox id="filtroTextbox" hflex="true"
+				onOK="@command('pesquisar')" />
+			<separator />
+			<button iconSclass="z-icon-search" label="Pesquisar"
+				onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<listbox id="monografiaListbox" model="@bind(vm.monografias)"
+		mold="paging" autopaging="true" vflex="true"
+		selectedItem="@bind(vm.monografiaSelecionada)">
+		<listhead>
+			<listheader hflex="min" label="Código" />
+			<listheader label="Título" />
+			<listheader label="Autores" />
+			<listheader hflex="min" label="Classificação" />
+			<listheader hflex="min" label="Cutter" />
+			<listheader hflex="min" label="Ações" align="center" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.id)" />
+				<listcell label="@load(item.titulo)" />
+				<listcell label="@load(item.autores)" />
+				<listcell label="@load(item.classificacao)" />
+				<listcell label="@load(item.cutter)" />
+				<listcell>
+					<button iconSclass="z-icon-edit"
+						onClick="@command('editar', id=item.id)" tooltiptext="Editar" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<window id="editWindow" visible="false" border="normal" width="80%"
+		height="600px">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar"
+					onClick="@command('salvar')" />
+				<button iconSclass="z-icon-trash-o" id="excluirButton"
+					label="Excluir" onClick="@command('excluir')" />
+				<button iconSclass="z-icon-sign-out" label="Fechar"
+					onClick="@command('fechar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<tabbox vflex="true" id="tabbox">
+			<tabs>
+				<tab>Dados Gerais</tab>
+				<tab>Cursos</tab>
+				<tab>Exemplares</tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+
+					<grid zclass="none" id="e_errors">
+						<columns>
+							<column />
+							<column />
+							<column />
+						</columns>
+						<rows>
+							<row zclass="none" spans="4">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Título" />
+										<textbox id="tituloTextbox"
+											value="@bind(vm.monografiaSelecionada.titulo)"
+											maxlength="200" hflex="true" />
+										<label id="e_titulo" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none" spans="4">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Subtítulo" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.subtitulo)"
+											maxlength="200" hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none" spans="2,2">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Autores" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.autores)" hflex="true"
+											rows="5" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Assuntos" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.assuntos)" hflex="true"
+											rows="5" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Classificação" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.classificacao)"
+											maxlength="50" hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Cutter" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.cutter)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="ISBN" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.isbn)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label
+											value="Tipo de Aquisição" />
+										<combobox
+											model="@bind(vm.tiposAquisicoes)"
+											selectedItem="@bind(vm.monografiaSelecionada.tipoAquisicao)"
+											hflex="true" />
+										<label id="e_tipoAquisicao" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Local" />
+										<combobox
+											model="@bind(vm.locais)"
+											selectedItem="@bind(vm.monografiaSelecionada.local)"
+											hflex="true" />
+										<label id="e_local" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Idioma" />
+										<combobox
+											model="@bind(vm.idiomas)"
+											selectedItem="@bind(vm.monografiaSelecionada.idioma)"
+											hflex="true" />
+										<label id="e_idioma" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Editora" />
+										<combobox
+											model="@bind(vm.editoras)"
+											selectedItem="@bind(vm.monografiaSelecionada.editora)"
+											hflex="true" />
+										<label id="e_editora" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Consulta Local" />
+										<combobox
+											model="@bind(vm.consultasLocais)"
+											selectedItem="@bind(vm.monografiaSelecionada.consultaLocal)"
+											hflex="true" />
+										<label id="e_consultaLocal" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<hbox hflex="true">
+										<vbox hflex="true">
+											<label
+												value="Número de Páginas" />
+											<textbox
+												value="@bind(vm.monografiaSelecionada.numeroPaginas)"
+												maxlength="10" hflex="true" />
+										</vbox>
+									</hbox>
+									<hbox hflex="true">
+										<vbox hflex="true">
+											<label value="Ano" />
+											<textbox
+												value="@bind(vm.monografiaSelecionada.ano)" maxlength="10"
+												hflex="true" />
+										</vbox>
+									</hbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Edição" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.edicao)" maxlength="10"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Volume" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.volume)" maxlength="20"
+											hflex="true" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Série" />
+										<textbox
+											value="@bind(vm.monografiaSelecionada.serie)" maxlength="50"
+											hflex="true" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Ativo" />
+										<combobox
+											model="@bind(vm.simNao)"
+											selectedItem="@bind(vm.monografiaSelecionada.ativo)"
+											hflex="true" />
+										<label id="e_ativo" />
+									</vbox>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+
+				</tabpanel>
+				<tabpanel>
+
+					<listbox id="cursoListbox"
+						model="@bind(vm.cursosDaMonografiaSelecionada)" vflex="true">
+						<listhead>
+							<listheader label="Nome" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model">
+							<listitem>
+								<listcell>
+									<combobox model="@bind(vm.cursos)"
+										selectedItem="@bind(each)" hflex="true"
+										onChange="@command('aoAlterarCursos')">
+										<template name="model">
+											<comboitem
+												label="${each.nome}" />
+										</template>
+									</combobox>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirCurso', id=each.id)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+				<tabpanel>
+
+					<hbox>
+						<label value="Adicionar" />
+						<intbox id="numeroNovosExemplaresIntbox"
+							value="1" cols="3" />
+						<label value="exemplar(es)" />
+						<button iconSclass="z-icon-plus"
+							onClick="@command('adicionarExemplares')"
+							tooltiptext="Adicionar" />
+					</hbox>
+
+					<separator />
+
+					<listbox
+						model="@bind(vm.monografiaSelecionada.exemplares)" vflex="true">
+						<listhead>
+							<listheader hflex="min" label="Registro" />
+							<listheader label="Emprestada para" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.id)" />
+								<listcell>
+									<zk if="${item.cliente != null}">
+										<label
+											value="${item.cliente.nome}" />
+									</zk>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirExemplar', em=item)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+
+
+	</window>
+
+</window>
+

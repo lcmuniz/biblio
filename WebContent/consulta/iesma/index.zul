@@ -1,0 +1,207 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template_consulta.zul"?>
+<?page title="Consulta"?>
+<window id="livroWindow" title="Consulta" border="normal" hflex="true"
+	vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.ConsultaView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<groupbox>
+		<hbox hflex="true">
+			<label value="Procurar por" />
+			<textbox id="filtroTextbox" hflex="true"
+				onOK="@command('pesquisar')" />
+			<separator />
+			<button iconSclass="z-icon-search" label="Pesquisar"
+				onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<tabbox vflex="true">
+		<tabs>
+			<tab id="livrosTab">Livros</tab>
+			<tab id="monografiasTab">Monografias</tab>
+			<tab id="periodicosTab">Artigos de Periódicos</tab>
+			<tab id="midiasTab">Mídias</tab>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+
+				<listbox id="livroListbox" model="@bind(vm.livros)"
+					vflex="true">
+					<listhead>
+						<listheader width="500px">Título</listheader>
+						<listheader>Autores</listheader>
+						<listheader>Assuntos</listheader>
+					</listhead>
+					<template name="model" var="livro">
+						<listitem>
+							<listcell>
+								<vbox>
+									<label
+										value="@load(livro.tituloCompletoUpperCase)" style="font-weight: bold" />
+									<hbox>
+										<label value="Ano: " />
+										<label value="@load(livro.ano)" />
+										<label value="Editora: " />
+										<label
+											value="@load(livro.editora.nome)" />
+									</hbox>
+									<hbox>
+										<label value="Classificação: " />
+										<label
+											value="@load(livro.classificacao)" />
+										<label value="Cutter: " />
+										<label
+											value="@load(livro.cutter)" />
+									</hbox>
+									<hbox style="color:red">
+										<label
+											value="@load(livro.textoExemplaresDisponíveis)" />
+									</hbox>
+								</vbox>
+							</listcell>
+							<listcell>
+								<label value="@load(livro.autores)" />
+							</listcell>
+							<listcell>
+								<label value="@load(livro.assuntos)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+
+			</tabpanel>
+			
+			<tabpanel>
+
+				<listbox id="monografiaListbox" model="@bind(vm.monografias)"
+					vflex="true">
+					<listhead>
+						<listheader width="500px">Título</listheader>
+						<listheader>Autores</listheader>
+						<listheader>Assuntos</listheader>
+					</listhead>
+					<template name="model" var="monografia">
+						<listitem>
+							<listcell>
+								<vbox>
+									<label
+										value="@load(monografia.tituloCompletoUpperCase)" style="font-weight: bold" />
+									<hbox>
+										<label value="Ano: " />
+										<label value="@load(monografia.ano)" />
+										<label value="Editora: " />
+										<label
+											value="@load(monografia.editora.nome)" />
+									</hbox>
+									<hbox>
+										<label value="Classificação: " />
+										<label
+											value="@load(monografia.classificacao)" />
+										<label value="Cutter: " />
+										<label
+											value="@load(monografia.cutter)" />
+									</hbox>
+									<hbox style="color:red">
+										<label
+											value="@load(monografia.textoExemplaresDisponíveis)" />
+									</hbox>
+									
+								</vbox>
+							</listcell>
+							<listcell>
+								<label value="@load(monografia.autores)" />
+							</listcell>
+							<listcell>
+								<label value="@load(monografia.assuntos)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+
+			</tabpanel>
+			
+			<tabpanel>
+
+				<listbox id="periodicoListbox" model="@bind(vm.artigos)"
+					vflex="true">
+					<listhead>
+						<listheader width="500px">Periódico</listheader>
+						<listheader>Artigo</listheader>
+						<listheader>Autores</listheader>
+						<listheader>Assuntos</listheader>
+					</listhead>
+					<template name="model" var="artigo">
+						<listitem>
+							<listcell>
+								<vbox>
+									<label value="@load(artigo.edicao.tituloCompletoUpperCase)" style="font-weight: bold" />
+									<hbox>
+										<label value="Volume: " />
+										<label value="@load(artigo.edicao.volume)" />
+										<label value="Número: " />
+										<label value="@load(artigo.edicao.numero)" />
+										<label value="Período: " />
+										<label value="@load(artigo.edicao.periodo)" />
+									</hbox>
+									<hbox style="color:red">
+										<label
+											value="@load(artigo.edicao.textoExemplaresDisponíveis)" />
+									</hbox>
+								</vbox>
+							</listcell>
+							<listcell>
+								<label value="@load(artigo.titulo)" />
+							</listcell>
+							<listcell>
+								<label value="@load(artigo.autores)" />
+							</listcell>
+							<listcell>
+								<label value="@load(artigo.assuntos)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+
+			</tabpanel>
+			
+			<tabpanel>
+
+				<listbox id="midiaListbox" model="@bind(vm.midias)"
+					vflex="true">
+					<listhead>
+						<listheader width="500px">Título</listheader>
+						<listheader>Descrição</listheader>
+					</listhead>
+					<template name="model" var="midia">
+						<listitem>
+							<listcell>
+								<vbox>
+									<label
+										value="@load(midia.tituloCompletoUpperCase)" style="font-weight: bold" />
+									<hbox style="color:red">
+										<label
+											value="@load(midia.textoExemplaresDisponíveis)" />
+									</hbox>
+								</vbox>
+							</listcell>
+							<listcell>
+								<label value="@load(midia.descricao)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+
+			</tabpanel>
+			
+			
+		</tabpanels>
+	</tabbox>
+
+
+
+</window>
+

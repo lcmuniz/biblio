@@ -1,0 +1,357 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Edição de Periódico"?>
+<window id="edicaoWindow" title="Edição de Períodico" border="normal"
+	hflex="true" vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.EdicaoView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<groupbox>
+		<hbox hflex="true">
+			<button iconSclass="z-icon-plus" label="Novo"
+				onClick="@command('novo')" />
+			<separator />
+			<label value="Procurar por" />
+			<combobox id="filtroPeriodicoCombobox"
+				model="@bind(vm.periodicos)"
+				selectedItem="@bind(vm.filtroPeriodico)" cols="50" />
+			<separator />
+			<textbox id="filtroTituloTextbox" hflex="true"
+				onOK="@command('pesquisar')" />
+			<separator />
+			<button iconSclass="z-icon-search" label="Pesquisar"
+				onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<listbox id="edicaoListbox" model="@bind(vm.edicoes)" mold="paging"
+		autopaging="true" vflex="true"
+		selectedItem="@bind(vm.edicaoSelecionada)">
+		<listhead>
+			<listheader hflex="min" label="Código" />
+			<listheader hflex="min" label="Periódico" />
+			<listheader label="Título" />
+			<listheader hflex="min" label="Volume" />
+			<listheader hflex="min" label="Número" />
+			<listheader hflex="min" label="Período" />
+
+			<listheader hflex="min" label="Ações" align="center" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.id)" />
+				<listcell label="@load(item.periodico.titulo)" />
+				<listcell label="@load(item.titulo)" />
+				<listcell label="@load(item.volume)" />
+				<listcell label="@load(item.numero)" />
+				<listcell label="@load(item.periodo)" />
+
+				<listcell>
+					<button iconSclass="z-icon-edit"
+						onClick="@command('editar', id=item.id)" tooltiptext="Editar" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<window id="editWindow" visible="false" border="normal"
+		width="80%">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar"
+					onClick="@command('salvar')" />
+				<button iconSclass="z-icon-trash-o" id="excluirButton"
+					label="Excluir" onClick="@command('excluir')" />
+				<button iconSclass="z-icon-ban" label="Fechar"
+					onClick="@command('fechar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<tabbox vflex="true" id="tabbox">
+			<tabs>
+				<tab>Dados Gerais</tab>
+				<tab>Artigos</tab>
+				<tab>Exemplares</tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+
+					<grid zclass="none" id="e_errors">
+						<columns>
+							<column />
+							<column />
+							<column />
+						</columns>
+						<rows>
+							<row zclass="none" spans="3">
+								<hbox hflex="true">
+									<vbox>
+										<label value="Periódico" />
+										<combobox id="periodicoCombobox"
+											model="@bind(vm.periodicos)"
+											selectedItem="@bind(vm.edicaoSelecionada.periodico)"
+											cols="80" />
+										<label id="e_periodico" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none" spans="3">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Título" />
+										<textbox
+											value="@bind(vm.edicaoSelecionada.titulo)" maxlength="200"
+											hflex="true" />
+										<label id="e_titulo" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Volume" />
+										<textbox
+											value="@bind(vm.edicaoSelecionada.volume)" maxlength="20"
+											hflex="true" />
+										<label id="e_volume" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Número" />
+										<textbox
+											value="@bind(vm.edicaoSelecionada.numero)" maxlength="20"
+											hflex="true" />
+										<label id="e_numero" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Período" />
+										<textbox
+											value="@bind(vm.edicaoSelecionada.periodo)" maxlength="50"
+											hflex="true" />
+										<label id="e_periodo" />
+									</vbox>
+								</hbox>
+							</row>
+							<row zclass="none">
+								<hbox hflex="true">
+									<vbox>
+										<label
+											value="Tipo de Aquisição" />
+										<combobox
+											model="@bind(vm.tiposAquisicoes)"
+											selectedItem="@bind(vm.edicaoSelecionada.tipoAquisicao)"
+											cols="30" />
+										<label id="e_tipoAquisicao" />
+									</vbox>
+								</hbox>
+								<hbox hflex="true">
+									<vbox hflex="true">
+										<label value="Ativo" />
+										<combobox
+											model="@bind(vm.simNao)"
+											selectedItem="@bind(vm.edicaoSelecionada.ativo)" />
+										<label id="e_ativo" />
+									</vbox>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+
+				</tabpanel>
+
+				<tabpanel>
+
+					<groupbox>
+						<hbox hflex="true">
+							<button iconSclass="z-icon-plus"
+								label="Novo" onClick="@command('novoArtigo')" />
+							<separator />
+						</hbox>
+					</groupbox>
+
+					<listbox model="@bind(vm.edicaoSelecionada.artigos)"
+						selectedItem="@bind(vm.artigoSelecionado)" vflex="true">
+						<listhead>
+							<listheader label="Titulo" />
+							<listheader label="Autores" />
+							<listheader label="Página" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model" var="artigo">
+							<listitem>
+								<listcell label="@load(artigo.titulo)" />
+								<listcell label="@load(artigo.autores)" />
+								<listcell label="@load(artigo.pagina)" />
+
+								<listcell>
+									<button iconSclass="z-icon-edit"
+										onClick="@command('editarArtigo', id=artigo.uid, obj=artigo)"
+										tooltiptext="Editar" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+
+				<tabpanel>
+
+					<hbox>
+						<label value="Adicionar" />
+						<intbox id="numeroNovosExemplaresIntbox"
+							value="1" cols="3" />
+						<label value="exemplar(es)" />
+						<button iconSclass="z-icon-plus"
+							onClick="@command('adicionarExemplares')"
+							tooltiptext="Adicionar" />
+					</hbox>
+
+					<separator />
+
+					<listbox
+						model="@bind(vm.edicaoSelecionada.exemplares)" vflex="true">
+						<listhead>
+							<listheader hflex="min" label="Registro" />
+							<listheader label="Emprestada para" />
+							<listheader hflex="min" label="Ações"
+								align="center" />
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.id)" />
+								<listcell>
+									<zk if="${item.cliente != null}">
+										<label value="${item.cliente.nome}"/>
+									</zk>
+								</listcell>
+
+								<listcell>
+									<button iconSclass="z-icon-trash-o"
+										onClick="@command('excluirExemplar', ee=item)"
+										tooltiptext="Excluir" />
+								</listcell>
+							</listitem>
+						</template>
+					</listbox>
+
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+
+	</window>
+
+	<window id="editArtigoWindow" visible="false" border="normal"
+		title="Artigo" width="80%">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar"
+					onClick="@command('salvarArtigo')" />
+				<button iconSclass="z-icon-trash-o"
+					id="excluirArtigoButton" label="Excluir"
+					onClick="@command('excluirArtigo')" />
+				<button iconSclass="z-icon-ban" label="Fechar"
+					onClick="@command('fecharArtigo')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<grid zclass="none" id="e1_errors">
+			<columns>
+				<column />
+			</columns>
+			<rows>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox>
+							<label value="Periódico" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Título" />
+							<textbox id="tituloArtigoTextbox"
+								value="@bind(vm.artigoSelecionado.titulo)" maxlength="150"
+								hflex="true" />
+							<label id="e1_titulo" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Subtitulo" />
+							<textbox
+								value="@bind(vm.artigoSelecionado.subtitulo)" maxlength="150"
+								hflex="true" />
+							<label id="e1_subtitulo" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Página" />
+							<textbox
+								value="@bind(vm.artigoSelecionado.pagina)" maxlength="10"
+								hflex="true" />
+							<label id="e1_pagina" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Autores" />
+							<textbox
+								value="@bind(vm.artigoSelecionado.autores)" hflex="true"
+								rows="2" />
+							<label id="e1_autores" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Assuntos" />
+							<textbox
+								value="@bind(vm.artigoSelecionado.assuntos)" maxlength="50"
+								hflex="true" rows="2" />
+							<label id="e1_assuntos" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Resumo" />
+							<textbox
+								value="@bind(vm.artigoSelecionado.resumo)" maxlength="50"
+								hflex="true" rows="3" />
+							<label id="e1_resumo" />
+						</vbox>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+
+
+	</window>
+
+
+</window>
+

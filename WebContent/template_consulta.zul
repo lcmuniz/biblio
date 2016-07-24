@@ -1,0 +1,14 @@
+<zk xmlns:h="native">
+	
+ 	<style src="/css/toastr.min.css"/>
+ 
+	<script src="/js/notify.min.js"></script>
+	<script src="/js/toastr.min.js"></script>
+	
+	<borderlayout hflex="true" id="zk_root">
+
+		
+		<center self="@{insert(content)}" border="none" hflex="true" vflex="true"></center>
+	</borderlayout>
+	<!-- <stimer running="true" repeats="true" delay="5000" apply="com.eficaztech.biblio.util.Timer"/> -->
+</zk>

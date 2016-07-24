@@ -1,0 +1,111 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Periódico"?>
+<window id="periodicoWindow" title="Periódico" border="normal" hflex="true" vflex="true" viewModel="@id('vm')@init('com.eficaztech.biblio.view.PeriodicoView')" apply="org.zkoss.bind.BindComposer"
+	self="@{define(content)}">
+
+	<groupbox>
+		<hbox>
+			<button iconSclass="z-icon-plus" label="Novo" onClick="@command('novo')" />
+			<separator />
+			<label value="Procurar por" />
+			<textbox id="filtroTextbox" hflex="true" onOK="@command('pesquisar')" />
+			<button iconSclass="z-icon-search" label="Pesquisar" onClick="@command('pesquisar')" />
+			<button label="Limpar" onClick="@command('limpar')" />
+		</hbox>
+	</groupbox>
+
+	<separator />
+
+	<listbox id="periodicoListbox" model="@bind(vm.periodicos)" mold="paging" autopaging="true" vflex="true" selectedItem="@bind(vm.periodicoSelecionado)">
+		<listhead>
+			<listheader label="Título" />
+			<listheader hflex="min" label="Editora" />
+			<listheader hflex="min" label="Ações" align="center" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.titulo)" />
+				<listcell label="@load(item.editora.nome)" />
+				<listcell>
+					<button iconSclass="z-icon-edit" onClick="@command('editar', id=item.id)" tooltiptext="Editar" />
+					<button iconSclass="z-icon-list" onClick="@command('verEdicoes', id=item.id)" tooltiptext="Ediçoẽs" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<window id="editWindow" visible="false" border="normal" width="80%">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar" onClick="@command('salvar')" />
+				<button iconSclass="z-icon-trash-o" id="excluirButton" label="Excluir" onClick="@command('excluir')" />
+				<button iconSclass="z-icon-ban" label="Cancelar" onClick="@command('cancelar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<grid zclass="none" id="e_errors">
+			<columns>
+				<column />
+			</columns>
+			<rows>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Título" />
+							<textbox id="tituloTextbox" value="@bind(vm.periodicoSelecionado.titulo)" maxlength="200" hflex="true" />
+							<label id="e_titulo" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox hflex="true">
+							<label value="Subtítulo" />
+							<textbox value="@bind(vm.periodicoSelecionado.subtitulo)" maxlength="200" hflex="true" />
+							<label id="e_subtitulo" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox>
+							<label value="Local" />
+							<combobox model="@bind(vm.locais)" selectedItem="@bind(vm.periodicoSelecionado.local)" cols="50" />
+							<label id="e_local" />
+						</vbox>
+						<vbox>
+							<label value="Idioma" />
+							<combobox model="@bind(vm.idiomas)" selectedItem="@bind(vm.periodicoSelecionado.idioma)" cols="50" />
+							<label id="e_idioma" />
+						</vbox>
+					</hbox>
+				</row>
+				<row zclass="none">
+					<hbox hflex="true">
+						<vbox>
+							<label value="Editora" />
+							<combobox model="@bind(vm.editoras)" selectedItem="@bind(vm.periodicoSelecionado.editora)" cols="50" />
+							<label id="e_editora" />
+						</vbox>
+						<vbox>
+							<label value="Periodicidade" />
+							<combobox model="@bind(vm.periodicidades)" selectedItem="@bind(vm.periodicoSelecionado.periodicidade)" cols="50" />
+							<label id="e_periodicidade" />
+						</vbox>
+						<vbox>
+							<label value="Consulta Local" />
+							<combobox model="@bind(vm.consultasLocais)" selectedItem="@bind(vm.periodicoSelecionado.consultaLocal)" />
+							<label id="e_consultaLocal" />
+						</vbox>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+
+	</window>
+
+</window>
+

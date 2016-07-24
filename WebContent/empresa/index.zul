@@ -1,0 +1,125 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Empresa"?>
+<window id="empresaWindow" border="normal" hflex="true" vflex="true" viewModel="@id('vm')@init('com.eficaztech.biblio.view.EmpresaView')" apply="org.zkoss.bind.BindComposer"
+	self="@{define(content)}">
+
+	<window id="editWindow" title="Empresa" position="center" visible="false" width="70%" border="normal">
+
+		<groupbox>
+			<hbox>
+				<button iconSclass="z-icon-check" label="Salvar" onClick="@command('salvar')" />
+				<button iconSclass="z-icon-ban" label="Cancelar" onClick="@command('cancelar')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+
+		<grid zclass="none" id="e_errors">
+			<columns>
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row zclass="none" spans="2">
+					<vbox hflex="true">
+						<label value="Organização" />
+						<textbox id="nomeTextbox" value="@bind(vm.empresaSelecionada.nome)" maxlength="100" hflex="true" />
+						<label id="e_nome" />
+					</vbox>
+				</row>
+
+				<row zclass="none" spans="2">
+					<vbox hflex="true">
+						<label value="Biblioteca" />
+						<textbox value="@bind(vm.empresaSelecionada.biblioteca)" maxlength="100" hflex="true" />
+						<label id="e_biblioteca" />
+					</vbox>
+				</row>
+
+				<row zclass="none" spans="2">
+					<vbox hflex="true">
+						<label value="Endereço" />
+						<textbox value="@bind(vm.empresaSelecionada.endereco)" maxlength="300" hflex="true" rows="5" />
+						<label id="e_endereco" />
+					</vbox>
+				</row>
+
+				<row zclass="none" spans="2">
+					<vbox hflex="true">
+						<label value="Telefones" />
+						<textbox value="@bind(vm.empresaSelecionada.telefones)" maxlength="50" hflex="true" />
+						<label id="e_telefones" />
+					</vbox>
+				</row>
+
+				<row zclass="none" spans="2">
+					<vbox>
+						<label value="Valor da multa" />
+						<decimalbox value="@bind(vm.empresaSelecionada.valorMulta)" maxlength="10" cols="10" format="#,##0.##" />
+						<label id="e_valorMulta" />
+					</vbox>
+				</row>
+
+				<row zclass="none">
+					<groupbox>
+						<caption label="Quantidades para empréstimos" />
+						<hbox>
+							<vbox>
+								<label value="Livros " />
+								<intbox value="@bind(vm.empresaSelecionada.quantidadeLivrosEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_quantidadeLivrosEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Periódicos " />
+								<intbox value="@bind(vm.empresaSelecionada.quantidadePeriodicosEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_quantidadePeridicosEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Mídias " />
+								<decimalbox value="@bind(vm.empresaSelecionada.quantidadeMidiasEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_quantidadeMidiasEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Monografias " />
+								<decimalbox value="@bind(vm.empresaSelecionada.quantidadeMonografiasEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_quantidadeMonografiasEmprestimo" />
+							</vbox>
+						</hbox>
+					</groupbox>
+
+					<groupbox>
+						<caption label="Dias para empréstimos" />
+						<hbox>
+							<vbox>
+								<label value="Livros " />
+								<intbox value="@bind(vm.empresaSelecionada.diasLivrosEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_diasLivrosEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Periódicos " />
+								<intbox value="@bind(vm.empresaSelecionada.diasPeriodicosEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_diasPeridicosEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Mídias " />
+								<decimalbox value="@bind(vm.empresaSelecionada.diasMidiasEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_diasMidiasEmprestimo" />
+							</vbox>
+							<vbox>
+								<label value="Monografias " />
+								<decimalbox value="@bind(vm.empresaSelecionada.diasMonografiasEmprestimo)" maxlength="10" cols="10" />
+								<label id="e_diasMonografiasEmprestimo" />
+							</vbox>
+						</hbox>
+					</groupbox>
+
+				</row>
+
+			</rows>
+		</grid>
+
+	</window>
+
+</window>
+

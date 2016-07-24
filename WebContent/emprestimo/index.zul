@@ -1,0 +1,96 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+<?page title="Livro"?>
+<window id="livroWindow" title="Empréstimo/Devolução" border="normal"
+	hflex="true" vflex="true"
+	viewModel="@id('vm')@init('com.eficaztech.biblio.view.EmprestimoView')"
+	apply="org.zkoss.bind.BindComposer" self="@{define(content)}">
+
+	<hbox width="100%">
+		<groupbox width="400px">
+			<caption>Usuário</caption>
+			<hbox>
+
+				<label value="Código" />
+				<vbox spacing="1">
+					<intbox id="filtroClienteIntbox"
+						onOK="@command('pesquisar')" />
+					<hbox>
+						<checkbox id="filtroMostrarDevolvidosCheckbox"
+							label="Mostrar devolvidos" />
+					</hbox>
+				</vbox>
+				<button iconSclass="z-icon-search" label="Pesquisar"
+					onClick="@command('pesquisar')" />
+
+			</hbox>
+		</groupbox>
+		<groupbox hflex="true">
+			<caption>Empréstimo</caption>
+			<hbox>
+				<label>Tipo</label>
+				<combobox model="@bind(vm.tipos)"
+					selectedItem="@bind(vm.tipoSelecionado)" />
+				<separator />
+				<label>Exemplar</label>
+				<vbox>
+					<intbox id="exemplarIntbox"
+						onOK="@command('emprestar')" />
+					<checkbox id="consultaLocalCheckbox"
+						label="Consulta Local" />
+				</vbox>
+				<button iconSclass="z-icon-plus" label="Emprestar"
+					onClick="@command('emprestar')" />
+				<separator />
+				<separator />
+				<separator />
+				<button iconSclass="z-icon-print" label="Imprimir"
+					onClick="@command('imprimir')" />
+			</hbox>
+		</groupbox>
+		<groupbox width="200px" vflex="true">
+			<caption>Renovação/Devolução</caption>
+			<hbox>
+				<button iconSclass="z-icon-retweet" label="Renovar"
+					onClick="@command('renovar')" />
+				<button iconSclass="z-icon-minus" label="Devolver"
+					onClick="@command('devolver')" />
+			</hbox>
+		</groupbox>
+	</hbox>
+
+	<separator />
+
+	<listbox id="livroListbox" model="@bind(vm.emprestimos)"
+		mold="paging" autopaging="true" vflex="true"
+		selectedItems="@bind(vm.emprestimosSelecionados)" multiple="true"
+		checkmark="true">
+		<auxhead>
+			<auxheader colspan="7">
+				<label id="tituloListboxLabel" style="font-weight:bold" />
+			</auxheader>
+		</auxhead>
+		<listhead>
+			<listheader label="Registro" hflex="min" />
+			<listheader label="Tipo" hflex="min" />
+			<listheader label="Título" />
+			<listheader label="Emprestado em" hflex="min" />
+			<listheader label="Devolver em" hflex="min" />
+			<listheader label="Devolvido em" hflex="min" />
+			<listheader label="Multa (R$)" hflex="min" align="right" />
+		</listhead>
+		<template name="model" var="item">
+			<listitem>
+				<listcell label="@load(item.exemplar.id)" />
+				<listcell label="@load(item.tipo)" />
+				<listcell label="@load(item.exemplar.obra.titulo)" />
+				<listcell label="@load(item.dataEmprestimoBR)" />
+				<listcell label="@load(item.dataPrevisaoDevolucaoBR)" />
+				<listcell label="@load(item.dataDevolucaoBR)" />
+				<listcell
+					label="@load(item.multa) @converter('formatedNumber', format='###,##0.00')" />
+			</listitem>
+		</template>
+	</listbox>
+
+</window>
+

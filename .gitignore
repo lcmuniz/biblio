@@ -1,0 +1,4 @@
+/src/*ebean.properties
+/build/
+/target/
+classpath.txt
