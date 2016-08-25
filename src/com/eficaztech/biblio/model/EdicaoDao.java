@@ -40,8 +40,9 @@ public class EdicaoDao {
 		}
 
 		String sql = "find edicao where " + while1
-				+ " and (titulo like :filtro) order by id";
+				+ " and ((edicaoId = :edicaoId) or (titulo like :filtro)) order by id";
 		Query<Edicao> query = BiblioServer.ebean.createQuery(Edicao.class, sql)
+				.setParameter("edicaoId", titulo.trim())
 				.setParameter("filtro", "%" + titulo.trim() + "%");
 		return query.findList();
 

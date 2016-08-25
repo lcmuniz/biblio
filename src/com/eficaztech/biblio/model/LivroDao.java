@@ -34,8 +34,9 @@ public class LivroDao {
 
 	public static List<Livro> find(String filtro) {
 
-		String sql = "find livro where (titulo like :titulo) or (subtitulo like :subtitulo) order by titulo";
+		String sql = "find livro where (livroid = :livroid) or (titulo like :titulo) or (subtitulo like :subtitulo) order by titulo";
 		Query<Livro> query = BiblioServer.ebean.createQuery(Livro.class, sql)
+				.setParameter("livroid", filtro.trim())
 				.setParameter("titulo", "%" + filtro.trim() + "%")
 				.setParameter("subtitulo", "%" + filtro.trim() + "%");
 		return query.findList();

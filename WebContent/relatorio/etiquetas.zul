@@ -15,7 +15,6 @@
 				<column />
 				<column hflex="min" />
 				<column />
-				<column hflex="max" />
 			</columns>
 			<rows>
 				<row>
@@ -27,16 +26,17 @@
 					<label>até</label>
 					<intbox id="fimIntbox"/>
 				</row>
-				<row>
+				<row spans="1,1,1,3">
 					<label>Linha</label>
 					<intbox value="1" id="linhaIntbox"/>
 					<label>Coluna</label>
 					<intbox value="1" id="colunaIntbox"/>
 				</row>
-				<row>
+				<row spans="1,5">
 					<label />
 					<button iconSclass="z-icon-print" label="Imprimir"
 						onClick="@command('imprimir')" />
+					
 				</row>
 			</rows>
 		</grid>

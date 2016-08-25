@@ -12,13 +12,18 @@
 
 				<label value="Código" />
 				<vbox spacing="1">
-					<intbox id="filtroClienteIntbox"
-						onOK="@command('pesquisar')" />
+					<hbox>
+						<intbox id="filtroClienteIntbox"
+							onOK="@command('pesquisar')" />
+						<button label="..."
+							onClick="@command('mostrarClientes')" />
+					</hbox>
 					<hbox>
 						<checkbox id="filtroMostrarDevolvidosCheckbox"
 							label="Mostrar devolvidos" />
 					</hbox>
 				</vbox>
+
 				<button iconSclass="z-icon-search" label="Pesquisar"
 					onClick="@command('pesquisar')" />
 
@@ -45,6 +50,8 @@
 				<separator />
 				<button iconSclass="z-icon-print" label="Imprimir"
 					onClick="@command('imprimir')" />
+				<textbox id="w" cols="1" />
+				<textbox id="h" cols="1" />
 			</hbox>
 		</groupbox>
 		<groupbox width="200px" vflex="true">
@@ -54,6 +61,7 @@
 					onClick="@command('renovar')" />
 				<button iconSclass="z-icon-minus" label="Devolver"
 					onClick="@command('devolver')" />
+
 			</hbox>
 		</groupbox>
 	</hbox>
@@ -91,6 +99,46 @@
 			</listitem>
 		</template>
 	</listbox>
+
+	<window id="clientesWindow" visible="false" border="normal"
+		title="Usuários" width="80%" height="400px">
+
+
+		<groupbox>
+			<hbox hflex="true">
+				<label value="Procurar por" />
+				<textbox id="filtroClienteTextbox" hflex="true" 
+					onOK="@command('pesquisarClientes')" />
+				<button iconSclass="z-icon-search" label="Pesquisar"
+					onClick="@command('pesquisarClientes')" />
+				<button label="Limpar" onClick="@command('limparClientes')" />
+			</hbox>
+		</groupbox>
+
+		<separator />
+
+		<listbox id="clientesListbox" model="@bind(vm.clientes)"
+			mold="paging" autopaging="true" vflex="true"
+			selectedItem="@bind(vm.clienteSelecionado)">
+			<listhead>
+				<listheader hflex="min" label="Código" />
+				<listheader label="Nome" />
+				<listheader hflex="min" label="Ações" align="center" />
+			</listhead>
+			<template name="model" var="item">
+				<listitem>
+					<listcell label="@load(item.id)" />
+					<listcell label="@load(item.nome)" />
+					<listcell>
+						<button iconSclass="z-icon-check"
+							onClick="@command('escolherCliente', id=item.id)" tooltiptext="Escolher" />
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+
+
+	</window>
 
 </window>
 

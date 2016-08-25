@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
@@ -113,7 +114,8 @@ public class EtiquetasRel extends View {
 			PdfWriter writer = PdfWriter.getInstance(document,
 					new FileOutputStream(temp));
 
-			document.setPageSize(PageSize.A4);
+			document.setPageSize(PageSize.LETTER);
+			document.setMargins(55, 10, 40, 40);
 			document.open();
 
 			PdfContentByte cb = writer.getDirectContent();
@@ -153,8 +155,9 @@ public class EtiquetasRel extends View {
 
 			for (int i = 1; i < brancos; i++) {
 				PdfPCell branco = new PdfPCell(new Paragraph(""));
-				branco.setMinimumHeight(70f);
+				branco.setMinimumHeight(71f);
 				branco.setBorder(PdfPCell.NO_BORDER);
+				//branco.setBorder(1);
 				table2.addCell(branco);
 			}
 
@@ -181,14 +184,16 @@ public class EtiquetasRel extends View {
 						barcode.createImageWithBarcode(cb, BaseColor.BLACK,
 								BaseColor.GRAY), false);
 				barraCell.setPadding(10);
+				barraCell.setMinimumHeight(71f);
 				barraCell.setBorder(PdfPCell.NO_BORDER);
+				//barraCell.setBorder(1);
 				barraCell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
 
 				Paragraph p = new Paragraph();
-				Chunk c1 = new Chunk("Classificação: ", font);
+				Chunk c1 = new Chunk("I E S M A\n", font);
 				Chunk c2 = new Chunk(exemplar.getLivro().getClassificacao()
 						+ "\n", fontb);
-				Chunk c3 = new Chunk("Cutter: ", font);
+				//Chunk c3 = new Chunk("Cutter: ", font);
 				Chunk c4 = new Chunk(exemplar.getLivro().getCutter() + "\n",
 						fontb);
 				Chunk c5 = new Chunk("Código: " + exemplar.getLivro().getId()
@@ -197,13 +202,15 @@ public class EtiquetasRel extends View {
 
 				p.add(c1);
 				p.add(c2);
-				p.add(c3);
+				//p.add(c3);
 				p.add(c4);
 				p.add(c5);
 				p.add(c6);
 
 				PdfPCell classificacaoCell = new PdfPCell(p);
 				classificacaoCell.setBorder(PdfPCell.NO_BORDER);
+				//classificacaoCell.setBorder(1);
+				
 				classificacaoCell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
 
 				table3.addCell(barraCell);
@@ -211,6 +218,7 @@ public class EtiquetasRel extends View {
 
 				PdfPCell cell = new PdfPCell(table3);
 				cell.setBorder(PdfPCell.NO_BORDER);
+				//cell.setBorder(1);
 				table2.addCell(cell);
 
 			}
@@ -284,7 +292,7 @@ public class EtiquetasRel extends View {
 
 			for (int i = 1; i < brancos; i++) {
 				PdfPCell branco = new PdfPCell(new Paragraph(""));
-				branco.setMinimumHeight(70f);
+				branco.setMinimumHeight(71f);
 				branco.setBorder(PdfPCell.NO_BORDER);
 				table2.addCell(branco);
 			}
@@ -312,14 +320,15 @@ public class EtiquetasRel extends View {
 						barcode.createImageWithBarcode(cb, BaseColor.BLACK,
 								BaseColor.GRAY), false);
 				barraCell.setPadding(10);
+				barraCell.setMinimumHeight(71f);
 				barraCell.setBorder(PdfPCell.NO_BORDER);
 				barraCell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
 
 				Paragraph p = new Paragraph();
-				Chunk c1 = new Chunk("Classificação: ", font);
+				Chunk c1 = new Chunk("I E S M A\n", font);
 				Chunk c2 = new Chunk(exemplar.getMonografia()
 						.getClassificacao() + "\n", fontb);
-				Chunk c3 = new Chunk("Cutter: ", font);
+				//Chunk c3 = new Chunk("Cutter: ", font);
 				Chunk c4 = new Chunk(exemplar.getMonografia().getCutter()
 						+ "\n", fontb);
 				Chunk c5 = new Chunk("Código: "
@@ -328,7 +337,7 @@ public class EtiquetasRel extends View {
 
 				p.add(c1);
 				p.add(c2);
-				p.add(c3);
+				//p.add(c3);
 				p.add(c4);
 				p.add(c5);
 				p.add(c6);
@@ -415,7 +424,7 @@ public class EtiquetasRel extends View {
 
 			for (int i = 1; i < brancos; i++) {
 				PdfPCell branco = new PdfPCell(new Paragraph(""));
-				branco.setMinimumHeight(70f);
+				branco.setMinimumHeight(71f);
 				branco.setBorder(PdfPCell.NO_BORDER);
 				table2.addCell(branco);
 			}
@@ -443,6 +452,7 @@ public class EtiquetasRel extends View {
 						barcode.createImageWithBarcode(cb, BaseColor.BLACK,
 								BaseColor.GRAY), false);
 				barraCell.setPadding(10);
+				barraCell.setMinimumHeight(71f);
 				barraCell.setBorder(PdfPCell.NO_BORDER);
 				barraCell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
 
@@ -538,7 +548,7 @@ public class EtiquetasRel extends View {
 
 			for (int i = 1; i < brancos; i++) {
 				PdfPCell branco = new PdfPCell(new Paragraph(""));
-				branco.setMinimumHeight(70f);
+				branco.setMinimumHeight(71f);
 				branco.setBorder(PdfPCell.NO_BORDER);
 				table2.addCell(branco);
 			}
@@ -566,6 +576,7 @@ public class EtiquetasRel extends View {
 						barcode.createImageWithBarcode(cb, BaseColor.BLACK,
 								BaseColor.GRAY), false);
 				barraCell.setPadding(10);
+				barraCell.setMinimumHeight(71f);
 				barraCell.setBorder(PdfPCell.NO_BORDER);
 				barraCell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
 

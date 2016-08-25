@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
@@ -17,6 +18,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.eficaztech.biblio.enums.TipoAquisicao;
@@ -48,6 +50,9 @@ public class EmprestimoView extends View {
 	private List<EmprestimoEdicao> emprestimosEdicoes;
 	private List<String> tipos;
 
+	private List<Cliente> clientes;
+	private Cliente clienteSelecionado;
+
 	private List<Emprestimo> emprestimos;
 
 	private List<Emprestimo> emprestimosSelecionados;
@@ -57,10 +62,16 @@ public class EmprestimoView extends View {
 	Window livroWindow;
 
 	@Wire
+	Window clientesWindow;
+
+	@Wire
 	Listbox livroListbox;
 
 	@Wire
 	Intbox filtroClienteIntbox;
+
+	@Wire("#clientesWindow #filtroClienteTextbox")
+	Textbox filtroClienteTextbox;
 
 	@Wire
 	Checkbox filtroMostrarDevolvidosCheckbox;
@@ -99,6 +110,36 @@ public class EmprestimoView extends View {
 
 	}
 
+	@Command
+	@NotifyChange("clientes")
+	public void mostrarClientes() {
+		filtroClienteTextbox.setValue("");
+		clientes = ClienteDao.all();
+		clienteSelecionado = null;
+		clientesWindow.doModal();
+	}
+
+	@Command
+	@NotifyChange("clientes")
+	public void pesquisarClientes() {
+		String filtro = filtroClienteTextbox.getValue();
+		clientes = ClienteDao.find(filtro);
+	}
+
+	@Command
+	@NotifyChange("clientes")
+	public void limparClientes() {
+		clientes = ClienteDao.all();
+		clienteSelecionado = null;
+		filtroClienteTextbox.setValue("");
+	}
+	
+	@Command
+	public void escolherCliente(@BindingParam("id") int id) {
+		filtroClienteIntbox.setValue(id);
+		clientesWindow.setVisible(false);
+	}
+	
 	@Command
 	@NotifyChange("emprestimos")
 	public void pesquisar() {
@@ -380,6 +421,22 @@ public class EmprestimoView extends View {
 
 	public void setTipoSelecionado(String tipoSelecionado) {
 		this.tipoSelecionado = tipoSelecionado;
+	}
+
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+
+	public Cliente getClienteSelecionado() {
+		return clienteSelecionado;
+	}
+
+	public void setClienteSelecionado(Cliente clienteSelecionado) {
+		this.clienteSelecionado = clienteSelecionado;
 	}
 
 }

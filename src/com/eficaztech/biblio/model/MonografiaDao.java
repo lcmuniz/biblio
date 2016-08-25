@@ -34,9 +34,10 @@ public class MonografiaDao {
 
 	public static List<Monografia> find(String filtro) {
 
-		String sql = "find monografia where (titulo like :titulo) or (subtitulo like :subtitulo) order by titulo";
+		String sql = "find monografia where (monografiaId = :monografiaId) or (titulo like :titulo) or (subtitulo like :subtitulo) order by titulo";
 		Query<Monografia> query = BiblioServer.ebean
 				.createQuery(Monografia.class, sql)
+				.setParameter("monografiaId", filtro.trim())
 				.setParameter("titulo", "%" + filtro.trim() + "%")
 				.setParameter("subtitulo", "%" + filtro.trim() + "%");
 		return query.findList();

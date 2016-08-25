@@ -34,8 +34,9 @@ public class MidiaDao {
 
 	public static List<Midia> find(String titulo) {
 
-		String sql = "find midia where titulo like :filtro order by titulo";
+		String sql = "find midia where midiaId = :midiaId or titulo like :filtro order by titulo";
 		Query<Midia> query = BiblioServer.ebean.createQuery(Midia.class, sql)
+				.setParameter("midiaId", titulo.trim())
 				.setParameter("filtro", "%" + titulo.trim() + "%");
 		return query.findList();
 

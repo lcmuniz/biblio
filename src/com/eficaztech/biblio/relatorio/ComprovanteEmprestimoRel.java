@@ -39,6 +39,8 @@ public class ComprovanteEmprestimoRel {
 			Document document = new Document();
 
 			PdfWriter.getInstance(document, new FileOutputStream(temp));
+			// document.setPageSize(new Rectangle(new Integer(w1.getValue()),
+			// new Integer(h1.getValue())));
 			document.setPageSize(PageSize.A4);
 			document.open();
 
@@ -186,5 +188,4 @@ public class ComprovanteEmprestimoRel {
 		}
 
 	}
-
 }
