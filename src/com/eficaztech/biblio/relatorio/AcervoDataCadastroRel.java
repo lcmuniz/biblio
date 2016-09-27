@@ -30,6 +30,7 @@ import com.eficaztech.biblio.model.ExemplarMidiaDao;
 import com.eficaztech.biblio.model.ExemplarMonografia;
 import com.eficaztech.biblio.model.ExemplarMonografiaDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.view.View;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -62,6 +63,8 @@ public class AcervoDataCadastroRel extends View {
 	@Override
 	public void afterCompose() {
 
+		if (!Security.isAdmOrBib()) return;
+		
 		tipos = new ArrayList<String>();
 		tipos.add("Livro");
 		tipos.add("Mídia");

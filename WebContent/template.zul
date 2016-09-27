@@ -17,7 +17,7 @@
 						<menuitem label="Sair" iconSclass="z-icon-sign-out" href="/login" />
 					</menupopup>
 				</menu>
-				<menu label="Cadastros" iconSclass="z-icon-keyboard-o">
+				<menu id="mnuCadastros" label="Cadastros" iconSclass="z-icon-keyboard-o">
 					<menupopup>
 					    <menuitem label="Livros" href="/livro"  />
 					    <menuitem label="Monografias" href="/monografia"  />
@@ -27,7 +27,7 @@
 						<menuitem label="Usuários da Biblioteca" href="/cliente"   />
 					</menupopup>
 				</menu>
-				<menu label="Tabelas Básicas" iconSclass="z-icon-table">
+				<menu id="mnuTabelasBasicas" label="Tabelas Básicas" iconSclass="z-icon-table">
 					<menupopup>
 						<menuitem label="Cursos" href="/curso" />
 						<menuitem label="Editoras" iconSclass="z-icon-building" href="/editora" />
@@ -37,7 +37,7 @@
 						<menuitem label="Usuários" iconSclass="z-icon-user" href="/usuario" />
 					</menupopup>
 				</menu>
-				<menu label="Relatórios" iconSclass="z-icon-file-text-o">
+				<menu id="mnuRelatorios" label="Relatórios" iconSclass="z-icon-file-text-o">
 					<menupopup>
 						<menuitem label="Etiquetas" href="/relatorio/etiquetas.zul" />
 						<menuseparator />

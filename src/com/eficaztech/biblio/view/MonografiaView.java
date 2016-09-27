@@ -37,6 +37,7 @@ import com.eficaztech.biblio.model.LocalDao;
 import com.eficaztech.biblio.model.Monografia;
 import com.eficaztech.biblio.model.MonografiaDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -86,6 +87,8 @@ public class MonografiaView extends View {
 
 	@Override
 	public void afterCompose() {
+		
+		if (!Security.isAdmOrBib()) return;
 
 		iniciarComboboxes();
 

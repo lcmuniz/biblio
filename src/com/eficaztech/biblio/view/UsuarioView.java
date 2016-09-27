@@ -22,6 +22,7 @@ import com.eficaztech.biblio.enums.Funcao;
 import com.eficaztech.biblio.model.Usuario;
 import com.eficaztech.biblio.model.UsuarioDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.Sessao;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
@@ -63,6 +64,7 @@ public class UsuarioView extends View {
 
 	@Override
 	public void afterCompose() {
+		if (!Security.isAdmOrBib()) return;
 		limpar();
 	}
 

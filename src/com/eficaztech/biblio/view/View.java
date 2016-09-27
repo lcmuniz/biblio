@@ -11,6 +11,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.Selectors;
 
+import com.eficaztech.biblio.enums.Funcao;
 import com.eficaztech.biblio.util.Sessao;
 
 public abstract class View {
@@ -36,17 +37,38 @@ public abstract class View {
 
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
+		
+		habilitaMenus(view);
+		
 		if (estaLogado()) {
 			view.getPage().addEventListener(Events.ON_CHANGE, eventListener);
 
 			Selectors.wireComponents(view, this, false);
 			afterCompose();
+			
 		} else {
 			Component c = Executions.getCurrent().getDesktop().getFirstPage()
 					.getFellowIfAny("zk_root", true);
 			c.setVisible(false);
 		}
 
+	}
+
+	private void habilitaMenus(Component view) {
+		
+		boolean adm = Sessao.get(Sessao.FUNCAO) == Funcao.ADM;
+		boolean bib = Sessao.get(Sessao.FUNCAO) == Funcao.BIB;
+		
+		Component m = view.getPage().getFellowIfAny("mnuCadastros");
+		m.setVisible(adm || bib);
+		
+		m = view.getPage().getFellowIfAny("mnuTabelasBasicas");
+		m.setVisible(adm || bib);
+		
+		m = view.getPage().getFellowIfAny("mnuRelatorios");
+		m.setVisible(adm || bib);
+		
+		
 	}
 
 	private boolean estaLogado() {

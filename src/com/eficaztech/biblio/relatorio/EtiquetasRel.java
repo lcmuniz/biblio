@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
@@ -26,6 +25,7 @@ import com.eficaztech.biblio.model.ExemplarMidiaDao;
 import com.eficaztech.biblio.model.ExemplarMonografia;
 import com.eficaztech.biblio.model.ExemplarMonografiaDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.view.View;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -66,6 +66,8 @@ public class EtiquetasRel extends View {
 
 	@Override
 	public void afterCompose() {
+		
+		if (!Security.isAdmOrBib()) return;
 
 		tipos = new ArrayList<String>();
 		tipos.add("Livro");
@@ -222,6 +224,12 @@ public class EtiquetasRel extends View {
 				table2.addCell(cell);
 
 			}
+			
+			// essa celula é necessária para que a última linha seja impressa
+			PdfPCell cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table2.addCell(cell);
+			
 			document.add(table2);
 
 			document.close();

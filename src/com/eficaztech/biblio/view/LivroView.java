@@ -37,6 +37,7 @@ import com.eficaztech.biblio.model.LivroDao;
 import com.eficaztech.biblio.model.Local;
 import com.eficaztech.biblio.model.LocalDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -87,9 +88,12 @@ public class LivroView extends View {
 	@Override
 	public void afterCompose() {
 
+		if (!Security.isAdmOrBib()) return;
+
 		iniciarComboboxes();
 
 		ultimos100();
+
 	}
 
 	private void ultimos100() {
@@ -138,6 +142,8 @@ public class LivroView extends View {
 	@NotifyChange({ "livroSelecionado", "cursosDoLivroSelecionado" })
 	public void novo() {
 		livroSelecionado = new Livro();
+		livroSelecionado.setConsultaLocal(SimNao.N);
+		livroSelecionado.setAtivo(SimNao.S);
 
 		cursosDoLivroSelecionado = new ArrayList<Curso>();
 		cursosDoLivroSelecionado.add(new Curso());
@@ -167,7 +173,7 @@ public class LivroView extends View {
 	}
 
 	@Command
-	@NotifyChange("livros")
+	@NotifyChange({ "livros", "livroSelecionado" })
 	public void salvar() {
 
 		try {
@@ -351,7 +357,7 @@ public class LivroView extends View {
 	public void setCursosDoLivroSelecionado(List<Curso> cursosDoLivroSelecionado) {
 		this.cursosDoLivroSelecionado = cursosDoLivroSelecionado;
 	}
-	
+
 	public SimNao[] getSimNao() {
 		return SimNao.values();
 	}

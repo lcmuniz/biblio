@@ -19,6 +19,7 @@ import org.zkoss.zul.Window;
 import com.eficaztech.biblio.model.Curso;
 import com.eficaztech.biblio.model.CursoDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -47,6 +48,7 @@ public class CursoView extends View {
 
 	@Override
 	public void afterCompose() {
+		if (!Security.isAdmOrBib()) return;
 		limpar();
 	}
 

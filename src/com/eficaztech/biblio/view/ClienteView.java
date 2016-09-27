@@ -22,6 +22,7 @@ import com.eficaztech.biblio.enums.TipoCliente;
 import com.eficaztech.biblio.model.Cliente;
 import com.eficaztech.biblio.model.ClienteDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -56,6 +57,7 @@ public class ClienteView extends View {
 
 	@Override
 	public void afterCompose() {
+		if (!Security.isAdmOrBib()) return;
 		limpar();
 	}
 

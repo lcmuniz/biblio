@@ -49,7 +49,7 @@
 										<label
 											value="@load(livro.editora.nome)" />
 									</hbox>
-									<hbox>
+									<hbox style="color:red">
 										<label value="Classificação: " />
 										<label
 											value="@load(livro.classificacao)" />

@@ -19,6 +19,7 @@ import org.zkoss.zul.Window;
 import com.eficaztech.biblio.model.Local;
 import com.eficaztech.biblio.model.LocalDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -47,6 +48,7 @@ public class LocalView extends View {
 
 	@Override
 	public void afterCompose() {
+		if (!Security.isAdmOrBib()) return;
 		limpar();
 	}
 

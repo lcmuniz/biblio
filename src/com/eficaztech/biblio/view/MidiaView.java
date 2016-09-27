@@ -28,6 +28,7 @@ import com.eficaztech.biblio.model.ExemplarMidia;
 import com.eficaztech.biblio.model.Midia;
 import com.eficaztech.biblio.model.MidiaDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -68,7 +69,11 @@ public class MidiaView extends View {
 
 	@Override
 	public void afterCompose() {
+		
+		if (!Security.isAdmOrBib()) return;
+		
 		limpar();
+		
 	}
 
 	@Command

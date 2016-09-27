@@ -82,13 +82,22 @@
 						<rows>
 							<row zclass="none" spans="4">
 								<hbox hflex="true">
-									<vbox hflex="true">
-										<label value="Título" />
-										<textbox id="tituloTextbox"
-											value="@bind(vm.livroSelecionado.titulo)" maxlength="200"
-											hflex="true" />
-										<label id="e_titulo" />
-									</vbox>
+									<hbox width="70px">
+										<vbox hflex="true">
+											<label value="Código" />
+											<label
+												value="@bind(vm.livroSelecionado.id)" />
+										</vbox>
+									</hbox>
+									<hbox hflex="true">
+										<vbox hflex="true">
+											<label value="Título" />
+											<textbox id="tituloTextbox"
+												value="@bind(vm.livroSelecionado.titulo)" maxlength="200"
+												hflex="true" />
+											<label id="e_titulo" />
+										</vbox>
+									</hbox>
 								</hbox>
 							</row>
 							<row zclass="none" spans="4">
@@ -316,7 +325,8 @@
 
 								<listcell>
 									<zk if="${item.cliente != null}">
-										<label value="${item.cliente.nome}"/>
+										<label
+											value="${item.cliente.nome}" />
 									</zk>
 								</listcell>
 

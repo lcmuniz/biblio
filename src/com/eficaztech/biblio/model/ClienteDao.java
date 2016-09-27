@@ -38,5 +38,12 @@ public class ClienteDao {
 				sql).setParameter("filtro", "%" + filtro + "%");
 		return query.findList();
 	}
+	
+	public static Cliente findByCodigo(Long codigo) {
+		String sql = "find cliente where (ativo = 'S') and (codigo = :codigo)";
+		Query<Cliente> query = BiblioServer.ebean.createQuery(Cliente.class,
+				sql).setParameter("codigo", codigo);
+		return query.findUnique();
+	}
 
 }

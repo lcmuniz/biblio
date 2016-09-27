@@ -342,23 +342,20 @@ public class Livro {
 			ret1 = exemplares + " exemplares";
 		}
 
-		String disp = "";
+		
 		int quant = 0;
 		for (ExemplarLivro exemplar : this.exemplares) {
 			if (exemplar.getCliente() == null) {
-				disp = disp + exemplar.getId() + ", ";
 				quant++;
 			}
 		}
-		disp = disp + "#";
-		disp = disp.replace(", #", "");
 
 		if (quant == 0) {
 			ret2 = "Nenhum disponível";
 		} else if (quant == 1) {
-			ret2 = "1 disponível : " + disp;
+			ret2 = "1 disponível";
 		} else {
-			ret2 = quant + " disponíveis: " + disp;
+			ret2 = quant + " disponíveis";
 		}
 
 		return ret1 + " (" + ret2 + ")";

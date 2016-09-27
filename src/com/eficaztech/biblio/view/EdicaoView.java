@@ -31,6 +31,7 @@ import com.eficaztech.biblio.model.ExemplarEdicao;
 import com.eficaztech.biblio.model.Periodico;
 import com.eficaztech.biblio.model.PeriodicoDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -84,6 +85,8 @@ public class EdicaoView extends View {
 
 	@Override
 	public void afterCompose() {
+		
+		if (!Security.isAdmOrBib()) return;
 
 		iniciarComboboxes();
 

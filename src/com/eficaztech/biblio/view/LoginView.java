@@ -13,9 +13,11 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.avaje.ebean.EbeanServerFactory;
+import com.eficaztech.biblio.enums.Funcao;
 import com.eficaztech.biblio.model.Usuario;
 import com.eficaztech.biblio.model.UsuarioDao;
 import com.eficaztech.biblio.util.BiblioServer;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.Sessao;
 
 public class LoginView {
@@ -36,6 +38,7 @@ public class LoginView {
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 		Sessao.set(Sessao.USUARIO, "");
+		Sessao.set(Sessao.FUNCAO, "");
 		organizacaoTextbox.setFocus(true);
 	}
 
@@ -65,7 +68,14 @@ public class LoginView {
 
 		if (usuario != null) {
 			Sessao.set(Sessao.USUARIO, usuario);
-			Executions.sendRedirect("/livro");
+			Sessao.set(Sessao.FUNCAO, usuario.getFuncao());
+
+			if (Security.isAdmOrBib()) {
+				Executions.sendRedirect("/livro");
+			} else {
+				return;
+			}
+			
 		} else {
 			Messagebox.show("Login inválido.", "Biblio", Messagebox.OK,
 					Messagebox.EXCLAMATION);

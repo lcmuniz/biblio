@@ -12,6 +12,7 @@ import com.eficaztech.biblio.enums.Estado;
 import com.eficaztech.biblio.model.Empresa;
 import com.eficaztech.biblio.model.EmpresaDao;
 import com.eficaztech.biblio.util.Notification;
+import com.eficaztech.biblio.util.Security;
 import com.eficaztech.biblio.util.ValidationException;
 import com.eficaztech.biblio.util.Validations;
 
@@ -29,6 +30,8 @@ public class EmpresaView extends View {
 
 	@Override
 	public void afterCompose() {
+		
+		if (!Security.isAdmOrBib()) return;
 
 		empresaSelecionada = EmpresaDao.findFirst();
 

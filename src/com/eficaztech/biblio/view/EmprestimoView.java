@@ -133,23 +133,25 @@ public class EmprestimoView extends View {
 		clienteSelecionado = null;
 		filtroClienteTextbox.setValue("");
 	}
-	
+
 	@Command
-	public void escolherCliente(@BindingParam("id") int id) {
-		filtroClienteIntbox.setValue(id);
+	@NotifyChange("emprestimos")
+	public void escolherCliente(@BindingParam("codigo") int codigo) {
+		filtroClienteIntbox.setValue(codigo);
 		clientesWindow.setVisible(false);
+		pesquisar();
 	}
-	
+
 	@Command
 	@NotifyChange("emprestimos")
 	public void pesquisar() {
 
 		emprestimosSelecionados = null;
 
-		long id = filtroClienteIntbox.getValue() == null ? 0
+		long codigo = filtroClienteIntbox.getValue() == null ? 0
 				: filtroClienteIntbox.getValue();
 
-		if (id == 0) {
+		if (codigo == 0) {
 			if (!primeiroAcesso) {
 				Notification.show("warning", "Escolha um usuário");
 			}
@@ -159,27 +161,29 @@ public class EmprestimoView extends View {
 			return;
 		}
 
-		Cliente cliente = ClienteDao.find(id);
+		Cliente cliente = ClienteDao.findByCodigo(codigo);
 		if (cliente == null) {
 			if (!primeiroAcesso) {
-				Notification.show("warning", "Usuário '" + id + "' não existe");
+				Notification.show("warning", "Usuário '" + codigo
+						+ "' não existe");
 			}
 			tituloListboxLabel.setValue("");
 			filtroClienteIntbox.setFocus(true);
 			primeiroAcesso = false;
+			emprestimos = new ArrayList<>();
 			return;
 		}
 
-		emprestimosLivros = EmprestimoLivroDao.findByCliente(id,
+		emprestimosLivros = EmprestimoLivroDao.findByCliente(cliente.getId(),
 				filtroMostrarDevolvidosCheckbox.isChecked());
 
-		emprestimosMidias = EmprestimoMidiaDao.findByCliente(id,
+		emprestimosMidias = EmprestimoMidiaDao.findByCliente(cliente.getId(),
 				filtroMostrarDevolvidosCheckbox.isChecked());
 
-		emprestimosMonografias = EmprestimoMonografiaDao.findByCliente(id,
-				filtroMostrarDevolvidosCheckbox.isChecked());
+		emprestimosMonografias = EmprestimoMonografiaDao.findByCliente(
+				cliente.getId(), filtroMostrarDevolvidosCheckbox.isChecked());
 
-		emprestimosEdicoes = EmprestimoEdicaoDao.findByCliente(id,
+		emprestimosEdicoes = EmprestimoEdicaoDao.findByCliente(cliente.getId(),
 				filtroMostrarDevolvidosCheckbox.isChecked());
 
 		emprestimos = new ArrayList<Emprestimo>();
@@ -190,8 +194,8 @@ public class EmprestimoView extends View {
 
 		if (emprestimos.size() == 0) {
 			Notification.show("warning",
-					"Não foi encontrado nenhum empréstimo para '" + id + " - "
-							+ cliente.getNome() + "'");
+					"Não foi encontrado nenhum empréstimo para '" + codigo
+							+ " - " + cliente.getNome() + "'");
 			tituloListboxLabel.setValue("");
 			filtroClienteIntbox.setFocus(true);
 			primeiroAcesso = false;
@@ -219,23 +223,25 @@ public class EmprestimoView extends View {
 	@NotifyChange({ "emprestimos" })
 	public void emprestar() {
 
-		long cliente = filtroClienteIntbox.getValue() == null ? 0
+		long codigo_cliente = filtroClienteIntbox.getValue() == null ? 0
 				: filtroClienteIntbox.getValue();
 		long exemplar = exemplarIntbox.getValue() == null ? 0 : exemplarIntbox
 				.getValue();
 
-		if (cliente == 0 || exemplar == 0) {
+		if (codigo_cliente == 0 || exemplar == 0) {
 			Notification.show("warning", "Escolha um cliente e um exemplar");
 			return;
 		}
 
+		Cliente cliente = ClienteDao.findByCodigo(codigo_cliente);
+		
 		if (tipoSelecionado == null) {
 			Notification.show("warning", "Tipo não informado corretamente");
 			return;
 		} else if (tipoSelecionado.equals("Livro")) {
 
 			try {
-				EmprestimoLivroDao.emprestar(cliente, exemplar,
+				EmprestimoLivroDao.emprestar(cliente.getId(), exemplar,
 						consultaLocalCheckbox.isChecked());
 			} catch (EmprestimoLivroException e) {
 				Notification.show("error", e.getMessage());
@@ -245,7 +251,7 @@ public class EmprestimoView extends View {
 		} else if (tipoSelecionado.equals("Mídia")) {
 
 			try {
-				EmprestimoMidiaDao.emprestar(cliente, exemplar,
+				EmprestimoMidiaDao.emprestar(cliente.getId(), exemplar,
 						consultaLocalCheckbox.isChecked());
 			} catch (EmprestimoMidiaException e) {
 				Notification.show("error", e.getMessage());
@@ -255,7 +261,7 @@ public class EmprestimoView extends View {
 		} else if (tipoSelecionado.equals("Monografia")) {
 
 			try {
-				EmprestimoMonografiaDao.emprestar(cliente, exemplar,
+				EmprestimoMonografiaDao.emprestar(cliente.getId(), exemplar,
 						consultaLocalCheckbox.isChecked());
 			} catch (EmprestimoMonografiaException e) {
 				Notification.show("error", e.getMessage());
@@ -265,7 +271,7 @@ public class EmprestimoView extends View {
 		} else if (tipoSelecionado.equals("Periódico")) {
 
 			try {
-				EmprestimoEdicaoDao.emprestar(cliente, exemplar,
+				EmprestimoEdicaoDao.emprestar(cliente.getId(), exemplar,
 						consultaLocalCheckbox.isChecked());
 			} catch (EmprestimoEdicaoException e) {
 				Notification.show("error", e.getMessage());
